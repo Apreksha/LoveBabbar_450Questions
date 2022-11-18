@@ -1,0 +1,22 @@
+  void dfsrec(vector<int>adj[],bool visited[],int source,vector<int> &v){
+	    visited[source]=true;
+	    v.push_back(source);
+	    for(int u:adj[source]){
+	        if(visited[u]==false)
+	            dfsrec(adj,visited,u,v);
+	    }
+	}
+	
+	vector<int>dfsOfGraph(int V, vector<int> adj[]){
+	    // Code here
+	    bool visited[V];
+	    for(int i=0;i<V;i++)
+	        visited[i]=false;
+	    vector<int> v;
+	    dfsrec(adj,visited,0,v);
+	    return v;
+	  
+	}
+  
+  Time Complexity: O(V + E)
+  Space Complexity: O(V)
