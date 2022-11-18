@@ -1,0 +1,79 @@
+//BFS implementation
+
+class Solution{
+	public:
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int v, vector<int> adj[]) {
+	    // code here
+	    queue<int> q;
+	    vector<int> indegree(v, 0);
+	    vector<int> ans;
+	    
+	    for(int i=0; i<v; i++){
+	        for(auto it: adj[i])
+	            indegree[it]++;
+	    }
+	    
+	    for(int i=0; i<v; i++){
+	        if(indegree[i] == 0)
+	            q.push(i);
+	    }
+	    
+	    while(!q.empty()){
+	        int i = q.front();
+	        q.pop();
+	        ans.push_back(i);
+	        
+	        for(auto it: adj[i]){
+	            indegree[it]--;
+	            if(indegree[it] == 0)
+	                q.push(it);
+	        }
+	    }
+	    
+	    return ans;
+	}
+};
+
+Time Complexity: O(V + E)
+Space Complexity: O(V)
+
+
+//DFS implementation
+
+class Solution{
+	public:
+	
+	void dfs(int i, vector<int> adj[], vector<bool> &visited, stack<int> &st){
+	    visited[i] = true;
+	    
+	    for(auto it: adj[i]){
+	        if(!visited[it])
+	            dfs(it, adj, visited, st);
+	    }
+	    st.push(i);
+	}
+	
+	vector<int> topoSort(int v, vector<int> adj[]) {
+	    // code here
+	    stack<int> st;
+	    vector<bool> visited(v, false);
+	    vector<int> ans;
+	    
+	    for(int i=0; i<v; i++){
+	        if(!visited[i])
+	            dfs(i, adj, visited, st);
+	    }
+	    
+	    while(!st.empty()){
+	        ans.push_back(st.top());
+	        st.pop();
+	    }
+	    
+	    return ans;
+	}
+};
+
+
+Time Complexity: O(V + E)
+Space Complexity: O(V)
