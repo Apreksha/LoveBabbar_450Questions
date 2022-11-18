@@ -1,0 +1,71 @@
+//DFS implementation
+
+    bool dfs(int i, vector<int> adj[], vector<bool> &visited, vector<bool> &dfsvisited){
+        dfsvisited[i] = true;
+        visited[i] = true;
+        
+        for(auto it: adj[i]){
+            if(!visited[it]){
+                if(dfs(it, adj, visited, dfsvisited))
+                    return true;
+            }
+            else if(dfsvisited[it])
+                return true;
+        }
+        dfsvisited[i]=false;
+        return false;
+    }
+    
+    bool isCyclic(int v, vector<int> adj[]) {
+        // code here
+        vector<bool>visited(v, false), dfsvisited(v, false);
+        
+        for(int i=0; i<v; i++){
+            if(!visited[i]){
+                if(dfs(i, adj, visited, dfsvisited))
+                    return true;
+            }
+        }
+        return false;
+    }
+    Time Complexity: O(V + E)
+    Space Complexity: O(V)
+    
+    //BFS implementation
+    
+        bool isCyclic(int v, vector<int> adj[]) {
+        // code here
+        vector<int>indegree(v, 0);
+        queue<int> q;
+        int count=0;
+        
+        for(int i=0; i<v; i++){
+            for(auto it: adj[i])
+                indegree[it]++;
+        }
+        
+        for(int i=0; i<v; i++){
+            if(indegree[i] == 0)
+                q.push(i);
+        }
+        
+        while(!q.empty()){
+            int i=q.front();
+            q.pop();
+            count++;
+            
+            for(auto it: adj[i]){
+                indegree[it]--;
+                if(indegree[it] == 0)    
+                    q.push(it);
+            }
+        }
+        
+        if(count == v)
+            return false;
+        return true;
+    }
+    
+    Time Complexity: O(V + E)
+    Space Complexity: O(V)
+
